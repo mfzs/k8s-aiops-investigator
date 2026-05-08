@@ -37,5 +37,9 @@ Recent Kubernetes Events:
 ---
 {incident.events or "No events returned."}
 ---
-""".strip()
 
+Prometheus Metrics:
+---
+{incident.metrics or "No metrics returned."}
+---
+""".strip()
