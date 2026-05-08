@@ -64,6 +64,9 @@ Useful Commands:
 kubectl get pods -n {incident.namespace}
 kubectl describe pod {incident.pod_name} -n {incident.namespace}
 
+Metric Context:
+{incident.metrics}
+
 Note:
 {note}
 """.strip()

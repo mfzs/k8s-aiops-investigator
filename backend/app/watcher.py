@@ -7,6 +7,7 @@ from app.config import settings
 from app.incident import Incident
 from app.kubernetes_client import core_v1
 from app.log_fetcher import fetch_events, fetch_logs
+from app.metrics_fetcher import fetch_metrics
 
 
 CRASH_REASONS = {
@@ -63,6 +64,7 @@ def watch_incidents() -> Iterator[Incident]:
                 node_name=pod.spec.node_name,
                 logs=fetch_logs(pod_name, namespace, container_name),
                 events=fetch_events(pod_name, namespace),
+                metrics=fetch_metrics(pod_name, namespace, container_name),
             )
 
 
@@ -75,4 +77,3 @@ def _pod_stream(watcher: watch.Watch):
         )
 
     return watcher.stream(core_v1.list_pod_for_all_namespaces, timeout_seconds=0)
-

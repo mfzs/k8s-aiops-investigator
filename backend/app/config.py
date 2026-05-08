@@ -13,8 +13,11 @@ class Settings:
     openai_api_key: Optional[str] = os.getenv("OPENAI_API_KEY")
     openai_model: str = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
     slack_webhook_url: Optional[str] = os.getenv("SLACK_WEBHOOK_URL")
+    prometheus_url: Optional[str] = os.getenv("PROMETHEUS_URL") or None
+    loki_url: Optional[str] = os.getenv("LOKI_URL") or None
     watch_namespace: Optional[str] = os.getenv("WATCH_NAMESPACE") or None
     log_tail_lines: int = int(os.getenv("LOG_TAIL_LINES", "200"))
+    metrics_lookback: str = os.getenv("METRICS_LOOKBACK", "5m")
     dry_run: bool = os.getenv("DRY_RUN", "false").lower() in {"1", "true", "yes"}
 
 

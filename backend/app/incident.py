@@ -15,6 +15,7 @@ class Incident:
     node_name: Optional[str]
     logs: str
     events: str
+    metrics: str
     detected_at: datetime
 
     @property
@@ -34,6 +35,7 @@ class Incident:
         node_name: Optional[str],
         logs: str,
         events: str,
+        metrics: str,
     ) -> "Incident":
         return cls(
             namespace=namespace,
@@ -46,5 +48,6 @@ class Incident:
             node_name=node_name,
             logs=logs,
             events=events,
+            metrics=metrics,
             detected_at=datetime.now(timezone.utc),
         )

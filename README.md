@@ -96,3 +96,19 @@ Phase 2: Add Prometheus, Grafana, Loki, and metrics/log correlation.
 Phase 3: Add Helm charts, CI/CD, RBAC hardening, persistence, and structured incident history.
 
 Phase 4: Add runbook RAG, anomaly detection, remediation recommendations, and optional auto-remediation.
+
+## Observability
+
+Install Prometheus, Grafana, and Loki:
+
+```bash
+make install-observability
+```
+
+Expose Prometheus locally:
+
+```bash
+make prometheus-port-forward
+```
+
+Set `PROMETHEUS_URL=http://localhost:9090` in `.env` so incident analysis includes metric context.
