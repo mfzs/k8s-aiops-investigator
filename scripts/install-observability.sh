@@ -12,6 +12,7 @@ helm upgrade --install monitoring prometheus-community/kube-prometheus-stack \
 
 helm upgrade --install loki grafana/loki-stack \
   --namespace monitoring \
+  --set loki.isDefault=false \
   --wait
 
 echo "Observability stack installed in namespace: monitoring"
