@@ -1,0 +1,7 @@
+apiVersion: v2
+name: k8s-aiops-investigator
+description: AI-powered Kubernetes incident investigation service
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+

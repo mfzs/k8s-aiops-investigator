@@ -1,0 +1,12 @@
+Create runtime secrets before enabling real AI and Slack alerts:
+
+kubectl create secret generic {{ .Values.secrets.existingSecret }} \
+  --namespace {{ .Release.Namespace }} \
+  --from-literal=OPENAI_API_KEY=<your-key> \
+  --from-literal=SLACK_WEBHOOK_URL=<your-webhook>
+
+Install or upgrade:
+
+helm upgrade --install {{ .Release.Name }} ./helm/k8s-aiops-investigator \
+  --namespace {{ .Release.Namespace }} --create-namespace
+

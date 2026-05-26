@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "k8s-aiops-investigator.fullname" . }}
+  labels:
+    {{- include "k8s-aiops-investigator.labels" . | nindent 4 }}
+data:
+  APP_NAME: {{ include "k8s-aiops-investigator.name" . | quote }}
+  APP_ENV: {{ .Values.config.appEnv | quote }}
+  LOG_LEVEL: {{ .Values.config.logLevel | quote }}
+  LOG_FORMAT: {{ .Values.config.logFormat | quote }}
+  WATCH_NAMESPACE: {{ .Values.config.watchNamespace | quote }}
+  OPENAI_MODEL: {{ .Values.config.openaiModel | quote }}
+  PROMETHEUS_URL: {{ .Values.config.prometheusUrl | quote }}
+  LOKI_URL: {{ .Values.config.lokiUrl | quote }}
+  LOG_TAIL_LINES: {{ .Values.config.logTailLines | quote }}
+  METRICS_LOOKBACK: {{ .Values.config.metricsLookback | quote }}
+  DRY_RUN: {{ .Values.config.dryRun | quote }}
+

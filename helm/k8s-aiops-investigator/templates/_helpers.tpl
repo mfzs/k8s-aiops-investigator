@@ -1,0 +1,38 @@
+{{- define "k8s-aiops-investigator.name" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
+{{- define "k8s-aiops-investigator.fullname" -}}
+{{- if .Values.fullnameOverride -}}
+{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- if contains $name .Release.Name -}}
+{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- else -}}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "k8s-aiops-investigator.labels" -}}
+helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version | replace "+" "_" }}
+app.kubernetes.io/name: {{ include "k8s-aiops-investigator.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end -}}
+
+{{- define "k8s-aiops-investigator.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "k8s-aiops-investigator.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end -}}
+
+{{- define "k8s-aiops-investigator.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+{{- default (include "k8s-aiops-investigator.fullname" .) .Values.serviceAccount.name -}}
+{{- else -}}
+{{- default "default" .Values.serviceAccount.name -}}
+{{- end -}}
+{{- end -}}
+

@@ -1,0 +1,59 @@
+replicaCount: 1
+
+image:
+  repository: mfzs/k8s-aiops-investigator
+  tag: latest
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  create: true
+  name: ""
+
+rbac:
+  create: true
+
+config:
+  appEnv: production
+  logLevel: INFO
+  logFormat: json
+  watchNamespace: aiops
+  openaiModel: gpt-4.1-mini
+  prometheusUrl: http://monitoring-kube-prometheus-prometheus.monitoring:9090
+  lokiUrl: http://loki.monitoring:3100
+  logTailLines: "200"
+  metricsLookback: 5m
+  dryRun: "false"
+
+secrets:
+  existingSecret: k8s-aiops-investigator-secrets
+  openaiApiKeyKey: OPENAI_API_KEY
+  slackWebhookUrlKey: SLACK_WEBHOOK_URL
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 512Mi
+
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 1000
+  runAsGroup: 1000
+  fsGroup: 1000
+
+securityContext:
+  allowPrivilegeEscalation: false
+  readOnlyRootFilesystem: true
+  capabilities:
+    drop:
+      - ALL
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+

@@ -85,6 +85,9 @@ make deploy-broken
 make run
 make run-dry
 make docker-build
+make helm-lint
+make helm-template
+make helm-install
 ```
 
 ## Roadmap
@@ -112,3 +115,53 @@ make prometheus-port-forward
 ```
 
 Set `PROMETHEUS_URL=http://localhost:9090` in `.env` so incident analysis includes metric context.
+
+## Production Deployment
+
+Phase 3 adds production packaging with Docker, Helm, RBAC, structured JSON logs, and GitHub Actions CI.
+
+Build the runtime image:
+
+```bash
+make docker-build
+```
+
+Push a release image:
+
+```bash
+docker tag mfzs/k8s-aiops-investigator:local mfzs/k8s-aiops-investigator:v0.1.0
+docker push mfzs/k8s-aiops-investigator:v0.1.0
+```
+
+Create runtime secrets:
+
+```bash
+kubectl create secret generic k8s-aiops-investigator-secrets \
+  --namespace aiops \
+  --from-literal=OPENAI_API_KEY=<your-key> \
+  --from-literal=SLACK_WEBHOOK_URL=<your-webhook>
+```
+
+Deploy with Helm:
+
+```bash
+make helm-install
+```
+
+Validate the chart:
+
+```bash
+make helm-lint
+make helm-template
+```
+
+For a local kind deployment with the locally built image:
+
+```bash
+kind load docker-image mfzs/k8s-aiops-investigator:local --name aiops
+helm upgrade --install investigator helm/k8s-aiops-investigator \
+  --namespace aiops \
+  --create-namespace \
+  --set image.tag=local \
+  --set config.dryRun=true
+```

@@ -1,4 +1,4 @@
-.PHONY: setup cluster deploy-broken deploy-demo install-observability prometheus-port-forward grafana-port-forward loki-port-forward run run-dry docker-build
+.PHONY: setup cluster deploy-broken deploy-demo install-observability prometheus-port-forward grafana-port-forward loki-port-forward run run-dry docker-build helm-lint helm-template helm-install
 
 setup:
 	cd backend && python3 -m venv venv && . venv/bin/activate && pip install -r requirements.txt
@@ -34,4 +34,13 @@ run-dry:
 	cd backend && DRY_RUN=true WATCH_NAMESPACE=aiops ./venv/bin/python -m app.main
 
 docker-build:
-	docker build -t k8s-aiops-investigator:local backend
+	docker build -t mfzs/k8s-aiops-investigator:local backend
+
+helm-lint:
+	helm lint helm/k8s-aiops-investigator
+
+helm-template:
+	helm template investigator helm/k8s-aiops-investigator --namespace aiops
+
+helm-install:
+	helm upgrade --install investigator helm/k8s-aiops-investigator --namespace aiops --create-namespace
