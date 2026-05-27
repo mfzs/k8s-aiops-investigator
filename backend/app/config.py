@@ -10,6 +10,10 @@ load_dotenv()
 
 @dataclass(frozen=True)
 class Settings:
+    app_name: str = os.getenv("APP_NAME", "k8s-aiops-investigator")
+    app_env: str = os.getenv("APP_ENV", "local")
+    log_level: str = os.getenv("LOG_LEVEL", "INFO")
+    log_format: str = os.getenv("LOG_FORMAT", "json")
     openai_api_key: Optional[str] = os.getenv("OPENAI_API_KEY")
     openai_model: str = os.getenv("OPENAI_MODEL", "gpt-4.1-mini")
     slack_webhook_url: Optional[str] = os.getenv("SLACK_WEBHOOK_URL")

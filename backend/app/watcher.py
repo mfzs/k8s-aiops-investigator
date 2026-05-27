@@ -51,7 +51,16 @@ def watch_incidents() -> Iterator[Incident]:
             pod_name = pod.metadata.name
             container_name = container.name
 
-            logger.info("incident detected: %s/%s %s", namespace, pod_name, reason)
+            logger.info(
+                "incident detected",
+                extra={
+                    "namespace": namespace,
+                    "pod": pod_name,
+                    "container": container_name,
+                    "reason": reason,
+                    "restart_count": container.restart_count,
+                },
+            )
 
             yield Incident.now(
                 namespace=namespace,
